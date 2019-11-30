@@ -2,6 +2,7 @@ import 'package:chatbot/models/chat_message.dart';
 import 'package:chatbot/widgets/chat_message_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dialogflow/dialogflow_v2.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -22,7 +23,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: Text('Chatbot - Professor'),
+        title: Text('WaiterBot'),
       ),
       body: Column(
         children: <Widget>[
@@ -49,9 +50,9 @@ class _HomePageState extends State<HomePage> {
   Future _dialogFlowRequest({String query}) async {
     // Adiciona uma mensagem temporária na lista
     _addMessage(
-        name: 'Professor',
+        name: 'WaiterBot',
         text: 'Escrevendo...',
-        type: ChatMessageType.received);
+        type: ChatMessageType.received, time: DateFormat('kk:mm').format(DateTime.now()));
 
     // Faz a autenticação com o serviço, envia a mensagem e recebe uma resposta da Intent
     AuthGoogle authGoogle = await AuthGoogle(fileJson: "assets/credentials.json").build();
@@ -65,21 +66,21 @@ class _HomePageState extends State<HomePage> {
 
     // adiciona a mensagem com a resposta do DialogFlow
     _addMessage(
-        name: 'Professor',
+        name: 'WaiterBot',
         text: response.getMessage() ?? '',
-        type: ChatMessageType.received);
+        type: ChatMessageType.received, time: DateFormat('kk:mm').format(DateTime.now()));
   }
 
   // Envia uma mensagem com o padrão a direita
   void _sendMessage({String text}) {
     _controllerText.clear();
-    _addMessage(name: 'Kleber Andrade', text: text, type: ChatMessageType.sent);
+    _addMessage(name: 'Marcelo Benedito', text: text, type: ChatMessageType.sent, time: DateFormat('kk:mm').format(DateTime.now()));
   }
 
   // Adiciona uma mensagem na lista de mensagens
-  void _addMessage({String name, String text, ChatMessageType type}) {
+  void _addMessage({String name, String text, ChatMessageType type, String time}) {
     var message = ChatMessage(
-        text: text, name: name, type: type);
+        text: text, name: name, type: type, time: time);
     setState(() {
       _messageList.insert(0, message);
     });
